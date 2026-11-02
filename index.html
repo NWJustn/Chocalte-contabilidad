@@ -81,13 +81,13 @@ function sum(a,k){return a.reduce(function(s,x){return s+x[k]},0)}
 
 function vInicio(){
  var v=S.v.filter(function(x){return inPer(x.f)}),g=S.g.filter(function(x){return inPer(x.f)});
- var tv=sum(v,"t"),tg=sum(g,"m"),gan=tv-tg,top={};
- v.forEach(function(x){top[x.p]=(top[x.p]||0)+x.c});
+ var tv=sum(v,"t"),tg=sum(g,"m"),gan=tv-tg,top={},tot={};
+ v.forEach(function(x){top[x.p]=(top[x.p]||0)+x.c;tot[x.p]=(tot[x.p]||0)+x.t});
  var tl=Object.keys(top).sort(function(a,b){return top[b]-top[a]}).slice(0,5);
  var bajos=S.i.filter(function(x){return x.c<=2});
  return segHtml()+'<div class="card"><div class="mu">Ganancia</div><div class="big '+(gan>=0?"ok":"bad")+'">'+money(gan)+'</div></div>'+
  '<div class="grid"><div class="card"><div class="mu">Ventas</div><b class="ok">'+money(tv)+'</b></div><div class="card"><div class="mu">Gastos</div><b class="bad">'+money(tg)+'</b></div></div>'+
- '<h2>Lo más vendido</h2><div class="card">'+(tl.length?tl.map(function(n){return '<div class="item"><span>'+esc(n)+'</span><b>'+top[n]+' un.</b></div>'}).join(""):'<div class="empty">Aún no hay ventas</div>')+'</div>'+
+ '<h2>Lo más vendido</h2><div class="card">'+(tl.length?tl.map(function(n){return '<div class="item"><div><b>'+esc(n)+'</b><span class="mu">'+top[n]+' un. vendidas</span></div><b class="ok">'+money(tot[n])+'</b></div>'}).join(""):'<div class="empty">Aún no hay ventas</div>')+'</div>'+
  (bajos.length?'<h2>Quedan pocos</h2><div class="card">'+bajos.map(function(x){return '<div class="item"><span>'+esc(x.n)+'</span><b class="bad">'+x.c+'</b></div>'}).join("")+'</div>':"")
 }
 function vVentas(){
